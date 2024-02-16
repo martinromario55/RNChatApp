@@ -10,10 +10,26 @@ import {
 import React, { useState } from 'react'
 import { Link } from 'expo-router'
 // import firebase from 'firebase'
+import { FIREBASE_AUTH } from '../../config/Firebase.Config'
+import { signInWithEmailAndPassword } from 'firebase/auth/react-native'
 
 const login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  // handleLogin
+  const handleLogin = async () => {
+    try {
+      setLoading(true)
+      signInWithEmailAndPassword(FIREBASE_AUTH, email, password)
+      console.log('Logged In')
+    } catch (error) {
+      console.log('There was an error loggin in', error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -38,7 +54,7 @@ const login = () => {
         value={password}
       />
       <View style={styles.button}>
-        <Button title="Login" />
+        <Button title="Login" onPress={handleLogin} />
       </View>
 
       <Link href="/(auth)/register" asChild>

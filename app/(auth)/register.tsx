@@ -6,6 +6,7 @@ import {
   TextInput,
   Button,
   Pressable,
+  ActivityIndicator,
 } from 'react-native'
 import { createUserWithEmailAndPassword } from 'firebase/auth/react-native'
 import React, { useState } from 'react'
@@ -16,14 +17,18 @@ const register = () => {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
 
   // Handle Registration with firebase
   const handleRegister = async () => {
     try {
+      setLoading(true)
       createUserWithEmailAndPassword(FIREBASE_AUTH, email, password)
       console.log('Logged In')
     } catch (error) {
       console.log('There was an error loggin in', error)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -56,7 +61,11 @@ const register = () => {
         value={password}
       />
       <View style={styles.button}>
-        <Button title="register" onPress={handleRegister} />
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          <Button title="register" onPress={handleRegister} />
+        )}
       </View>
 
       <Link href="/(auth)/login" asChild>
