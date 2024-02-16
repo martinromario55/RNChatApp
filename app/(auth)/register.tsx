@@ -7,10 +7,10 @@ import {
   Button,
   Pressable,
 } from 'react-native'
-// import { createUserWithEmailAndPassword } from 'firebase/auth/react-native'
+import { createUserWithEmailAndPassword } from 'firebase/auth/react-native'
 import React, { useState } from 'react'
 import { Link } from 'expo-router'
-// import { FIREBASE_AUTH } from '../../config/Firebase.Config'
+import { FIREBASE_AUTH } from '../../config/Firebase.Config'
 
 const register = () => {
   const [username, setUsername] = useState('')
@@ -18,14 +18,14 @@ const register = () => {
   const [password, setPassword] = useState('')
 
   // Handle Registration with firebase
-  // const handleRegister = async () => {
-  //   try {
-  //     createUserWithEmailAndPassword(FIREBASE_AUTH, email, password)
-  //     console.log('Logged In')
-  //   } catch (error) {
-  //     console.log('There was an error loggin in', error)
-  //   }
-  // }
+  const handleRegister = async () => {
+    try {
+      createUserWithEmailAndPassword(FIREBASE_AUTH, email, password)
+      console.log('Logged In')
+    } catch (error) {
+      console.log('There was an error loggin in', error)
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -56,7 +56,7 @@ const register = () => {
         value={password}
       />
       <View style={styles.button}>
-        <Button title="register" />
+        <Button title="register" onPress={handleRegister} />
       </View>
 
       <Link href="/(auth)/login" asChild>
