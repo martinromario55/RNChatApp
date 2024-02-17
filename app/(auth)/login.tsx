@@ -19,7 +19,7 @@ const Login = ({ navigation }) => {
   const [email, setEmail] = useState('johndoe@jd.com')
   const [password, setPassword] = useState('123456')
   const [loading, setLoading] = useState(false)
-  // const router = useRouter()
+  const router = useRouter()
 
   // handleLogin
   const handleLogin = async () => {
@@ -27,7 +27,7 @@ const Login = ({ navigation }) => {
       setLoading(true)
       await signInWithEmailAndPassword(FIREBASE_AUTH, email, password)
       console.log('Logged In')
-      // router.push('/(tabs)/groups')
+      router.push('/(tabs)/groups')
     } catch (error) {
       console.log('There was an error loggin in', error)
     } finally {
