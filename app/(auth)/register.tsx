@@ -7,11 +7,13 @@ import {
   Button,
   Pressable,
   ActivityIndicator,
+  Keyboard,
 } from 'react-native'
-import { createUserWithEmailAndPassword } from 'firebase/auth/react-native'
+import { createUserWithEmailAndPassword, UserCredential } from 'firebase/auth'
 import React, { useState } from 'react'
 import { Link } from 'expo-router'
-import { FIREBASE_AUTH } from '../../config/Firebase.Config'
+import { FIREBASE_AUTH, FIREBASE_DB } from '../../config/Firebase.Config'
+import { doc, setDoc } from 'firebase/firestore'
 
 const register = () => {
   const [username, setUsername] = useState('')
@@ -23,12 +25,35 @@ const register = () => {
   const handleRegister = async () => {
     try {
       setLoading(true)
-      createUserWithEmailAndPassword(FIREBASE_AUTH, email, password)
-      console.log('Logged In')
+      const user = await createUserWithEmailAndPassword(
+        FIREBASE_AUTH,
+        email,
+        password
+      )
+
+      console.log('Registered')
+
+      createUserInformation(user)
     } catch (error) {
-      console.log('There was an error loggin in', error)
+      console.log('There was an error while registering', error)
     } finally {
       setLoading(false)
+      Keyboard.dismiss()
+      setUsername('')
+      setEmail('')
+      setPassword('')
+    }
+  }
+
+  // create user Information
+  const createUserInformation = async (user: UserCredential) => {
+    try {
+      await setDoc(doc(FIREBASE_DB, `users/${user.user.uid}`), {
+        username,
+        email: user.user.email,
+      })
+    } catch (error) {
+      console.log('There was an error crating user information', error)
     }
   }
 

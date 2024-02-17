@@ -6,28 +6,35 @@ import {
   TextInput,
   Button,
   Pressable,
+  ActivityIndicator,
+  Keyboard,
 } from 'react-native'
 import React, { useState } from 'react'
-import { Link } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 // import firebase from 'firebase'
 import { FIREBASE_AUTH } from '../../config/Firebase.Config'
-import { signInWithEmailAndPassword } from 'firebase/auth/react-native'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 
-const login = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+const Login = ({ navigation }) => {
+  const [email, setEmail] = useState('johndoe@jd.com')
+  const [password, setPassword] = useState('123456')
   const [loading, setLoading] = useState(false)
+  // const router = useRouter()
 
   // handleLogin
   const handleLogin = async () => {
     try {
       setLoading(true)
-      signInWithEmailAndPassword(FIREBASE_AUTH, email, password)
+      await signInWithEmailAndPassword(FIREBASE_AUTH, email, password)
       console.log('Logged In')
+      // router.push('/(tabs)/groups')
     } catch (error) {
       console.log('There was an error loggin in', error)
     } finally {
       setLoading(false)
+      Keyboard.dismiss()
+      // setEmail('')
+      // setPassword('')
     }
   }
 
@@ -54,7 +61,11 @@ const login = () => {
         value={password}
       />
       <View style={styles.button}>
-        <Button title="Login" onPress={handleLogin} />
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          <Button title="login" onPress={handleLogin} disabled={loading} />
+        )}
       </View>
 
       <Link href="/(auth)/register" asChild>
@@ -98,4 +109,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default login
+export default Login
