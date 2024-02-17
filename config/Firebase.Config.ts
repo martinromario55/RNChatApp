@@ -9,12 +9,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // Initialize Firebase
 const firebaseConfig = {
-  apiKey: 'AIzaSyAMhPQiyT8es9vMFjFjUpNFL7HVgjD5SRA',
-  authDomain: 'rnchatapp-5d128.firebaseapp.com',
-  projectId: 'rnchatapp-5d128',
-  storageBucket: 'rnchatapp-5d128.appspot.com',
-  messagingSenderId: '750033693198',
-  appId: '1:750033693198:web:b93c31f3113480fda22a5f',
+  apiKey: '',
+  authDomain: '',
+  projectId: '',
+  storageBucket: '',
+  messagingSenderId: '',
+  appId: '',
 }
 
 export const FIREBASE_APP = initializeApp(firebaseConfig)
